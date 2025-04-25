@@ -1,3 +1,5 @@
+import os
+
 import tokenizer.tokenizer as tokenizer
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -27,11 +29,14 @@ class ErtakDataset(Dataset):
 
 
 def get_data_loader(split:str='train', batch_size:int=16, block_size:int=8, stride:int=8, shuffle:bool=True):
+    current_dir = os.path.dirname(__file__)
     file_name = (
         'uzbek_ertak/uzbek_ertak_training.txt'
         if split == 'train' else
         'uzbek_ertak/uzbek_ertak_validation.txt'
     )
+
+    file_name = os.path.join(current_dir, file_name)
 
     text = open(file_name, 'rt', encoding='utf-8').read()
     encoded_data = tokenizer.encode(text)
